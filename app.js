@@ -9,7 +9,7 @@ mongoose.connect('mongodb+srv://Artur:' + process.env.MONGO_ATLAS_PW + '@node-re
     useUnifiedTopology: true
 });
 
-
+mongoose.Promice = global.Promice;
 const productRoutes = require('./api/products');
 const orderRoutes = require('./api/orders');
 
