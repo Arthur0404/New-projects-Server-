@@ -76,6 +76,7 @@ router.post('/', (req,res,next) => {
 });
 router.get('/:orderID', (req,res,next) => {
     Order.findById(req.params.orderId)
+        .populate('product')
         .exec()
         .then(order => {
             if (!order) {
