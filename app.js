@@ -1,8 +1,9 @@
 const express = require('express');
-const app =express();
+const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const userRoutes = require('./api/routes/user');
 
 mongoose.connect('mongodb+srv://Artur:' + process.env.MONGO_ATLAS_PW + '@node-rest-shop-wljhm.mongodb.net/test?retryWrites=true&w=majority',{
     useNewUrlParser: true,
@@ -10,11 +11,12 @@ mongoose.connect('mongodb+srv://Artur:' + process.env.MONGO_ATLAS_PW + '@node-re
 });
 
 mongoose.Promice = global.Promice;
-const productRoutes = require('./api/products');
-const orderRoutes = require('./api/orders');
+const productRoutes = require('./api/routes/products');
+const orderRoutes = require('./api/routes/orders');
 
 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
@@ -32,6 +34,7 @@ app.use((req,res,next) => {
 // Routes which should handle requests
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use("/user", userRoutes);
 
 app.use((req,res,next) => {
     const error = new Error('Not found');
@@ -47,8 +50,5 @@ app.use((error,req,res,next) => {
         }
     })
 });
-
-
-
 
 module.exports = app;
